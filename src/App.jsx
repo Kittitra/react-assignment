@@ -1,17 +1,76 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+// import Navbar from "./components/Navbar";
+// import Footer from "./components/Footer";
+
+// import Home from "./pages/Home";
+// import ProductDetail from "./pages/ProductDetail";
+// import Cart from "./pages/Cart";
+// import Checkout from "./pages/Checkout";
+// import Login from "./pages/Login";
+// import Register from "./pages/Register";
+// import Dashboard from "./pages/Dashboard";
+
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+import ProductDetail from "./pages/ProductDetail";
+import Cart from "./pages/Cart";
+import Checkout from "./pages/CheckOut";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import ProtectedRoute from "./protect/ProtectRoute";
+import Footer from "./components/Footer";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div className='text-red-500'>
-        555
+    <BrowserRouter>
+      <div style={styles.layout}>
+        
+        {/* Header */}
+        <Navbar />
+
+        {/* Main Content */}
+        <div style={styles.content}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout />} />
+
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+
+            {/* Protected */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </div>
+
+        {/* Footer */}
+        <Footer />
+
       </div>
-    </>
-  )
+    </BrowserRouter>
+  );
 }
 
-export default App
+const styles = {
+  layout: {
+    display: "flex",
+    flexDirection: "column",
+    minHeight: "100vh",
+  },
+  content: {
+    flex: 1,
+    padding: "20px",
+  },
+};
+
+export default App;
