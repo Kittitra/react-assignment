@@ -1,74 +1,42 @@
 <?php
+header("Content-Type: application/json");
 
-class RentalItem {
+require_once("../Database.php");
+require_once("../model/RentalItem.php");
 
-    private $conn;
+$db = (new Database())->getConnection();
+$item = new RentalItem($db);
 
-    public function __construct($db){
-        $this->conn = $db;
-    }
+$method = $_SERVER['REQUEST_METHOD'];
+$uri = $_SERVER['REQUEST_URI'];
 
-    // 🔹 CREATE
-    public function create($rental_id,$item_id,$price,$days){
 
-        $subtotal = $price * $days;
-
-        $sql = "INSERT INTO rental_items
-                (rental_id,item_id,price_per_day,days,subtotal)
-                VALUES (:rental,:item,:price,:days,:subtotal)";
-
-        $stmt = $this->conn->prepare($sql);
-
-        $stmt->bindParam(":rental",$rental_id);
-        $stmt->bindParam(":item",$item_id);
-        $stmt->bindParam(":price",$price);
-        $stmt->bindParam(":days",$days);
-        $stmt->bindParam(":subtotal",$subtotal);
-
-        return $stmt->execute();
-    }
-
-    // GET ALL (สำหรับ admin)
-    public function getAll(){
-
-        $sql = "SELECT ri.*, p.product_name FROM rental_items ri LEFT JOIN product_items pi ON ri.item_id = pi.item_id LEFT JOIN products p ON pi.product_id = p.product_id";
-        $stmt = $this->conn->prepare($sql);
-
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    // GET BY ID
-    public function getById($id){
-        $sql = "SELECT * FROM rental_items WHERE rental_item_id = :id";
-        $stmt = $this->conn->prepare($sql);
-
-        $stmt->bindParam(":id",$id);
-        $stmt->execute();
-
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
-    // GET BY RENTAL
-    public function getByRental($rental_id){
-        $sql = "SELECT ri.*, p.product_name FROM rental_items ri LEFT JOIN product_items pi ON ri.item_id = pi.item_id LEFT JOIN products p ON pi.product_id = p.product_id WHERE ri.rental_id = :id";
-        $stmt = $this->conn->prepare($sql);
-
-        $stmt->bindParam(":id",$rental_id);
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    // DELETE
-    public function delete($id){
-        $sql = "DELETE FROM rental_items WHERE rental_item_id = :id";
-        $stmt = $this->conn->prepare($sql);
-        
-        $stmt->bindParam(":id",$id);
-
-        return $stmt->execute();
-    }
+// GET ALL
+if($method == "GET" && preg_match('#/api/rental_item.php$#',$uri)){
+    echo json_encode($item->getAll());
+    exit;
 }
-?>
+
+
+// GET BY ID
+if($method == "GET" && preg_match('#/api/rental_item.php/([0-9]+)$#',$uri,$m)){
+    echo json_encode($item->getById($m[1]));
+    exit;
+}
+
+
+// GET BY RENTAL สำคัญ
+if($method == "GET" && preg_match('#/api/rental_item.php/rental/([0-9]+)$#',$uri,$m)){
+    echo json_encode($item->getByRental($m[1]));
+    exit;
+}
+
+
+// DELETE
+if($method == "DELETE" && preg_match('#/api/rental_item.php/([0-9]+)$#',$uri,$m)){
+
+    $result = $item->delete($m[1]);
+
+    echo json_encode(["success"=>$result]);
+    exit;
+}
