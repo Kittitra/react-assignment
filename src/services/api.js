@@ -16,7 +16,7 @@ export async function getProducts() {
   }
 }
 
-// 🔹 ดึงสินค้า 1 ชิ้น
+// ดึงสินค้า 1 ชิ้น
 export async function getProductById(id) {
   try {
     const res = await axios.get(`${API_URL}?id=${id}`);
