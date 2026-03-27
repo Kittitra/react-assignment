@@ -122,4 +122,5 @@ class Customers
         $stmt->bindParam(":id", $id);
         return $stmt->execute();
     }
+
 }
