@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
 import ProductList from "../components/ProductList";
-// import { getProducts } from "../services/api";
+import { getProducts } from "../service/api";
 
 function Home() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // getProducts().then((res) => setProducts(res.data));
+    const fetchData = async () => {
+      const data = await getProducts();
+      setProducts(data);
+
+      console.log("API RESULT:", data); // ✅ ถูก
+    };
+
+    fetchData();
   }, []);
 
   return (
