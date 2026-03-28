@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost/react-assignment/api",
+  baseURL: "http://localhost/react-assignment/backend/api",
   headers: {
     "Content-Type": "application/json"
   }

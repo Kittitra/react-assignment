@@ -55,7 +55,7 @@ if($method == "POST" && preg_match('#/api/product.php$#',$uri)){
         $data['description'],
         $data['category_id'],
         $data['rental_price_per_day'],
-        $data['image_url'] ?? null
+        $data['image'] ?? null
     );
 
     echo json_encode(["success"=>$result]);
@@ -77,7 +77,7 @@ if($method == "PUT" && preg_match('#/api/product.php/([0-9]+)$#',$uri,$matches))
         $data['description'],
         $data['category_id'],
         $data['rental_price_per_day'],
-        $data['image_url'] ?? null
+        $data['image'] ?? null
     );
 
     echo json_encode(["success"=>$result]);
