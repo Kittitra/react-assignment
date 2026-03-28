@@ -21,6 +21,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./protect/ProtectRoute";
 import Footer from "./components/Footer";
+import AllLoginAndRegis from "./pages/AllLoginAndRegis";
 
 function App() {
   return (
@@ -38,7 +39,7 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
 
-            <Route path="/login" element={<Login />} />
+            <Route path="/allLoginAndRegis" element={<AllLoginAndRegis />} />
             <Route path="/register" element={<Register />} />
 
             {/* Protected */}
