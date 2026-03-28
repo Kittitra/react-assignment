@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import DatePicker from "../components/DatePicker";
 import { useEffect, useState } from "react";
-import { getProductById } from "../service/api";
+import { getProductById } from "../services/productService";
 
 function ProductDetail() {
   const { id } = useParams();
@@ -28,7 +28,7 @@ function ProductDetail() {
       </div>
 
       <h2>Product Detail</h2>
-      <img src={product.img} alt="" className="w-50 h-50 rounded-md"/>
+      <img src={product.image_url} alt="" className="w-50 h-50 rounded-md"/>
       <span>
         ชื่อสินค้า: {product.product_name}
       </span>

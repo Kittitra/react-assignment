@@ -6,7 +6,7 @@ function ProductList({ products }) {
   return (
     <div className="flex flex-row gap-10">
       {products.map((p) => (
-        <ProductCard key={p.id} product={p} />
+        <ProductCard key={p.product_id} product={p} />
       ))}
     </div>
   );
