@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import "./StyleLoginAndRegis.css";
 
 function Register() {
   const [form, setForm] = useState({
@@ -22,31 +24,32 @@ function Register() {
   };
 
   return (
-    <div>
-      <h2>สมัครสมาชิก</h2>
+    <div className="container">
+      <div className="form-container sign-up" style={{ width: "100%", opacity: 1 }}>
+        <form>
+          <h1>Create Account</h1>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          name="name"
-          placeholder="ชื่อ"
-          onChange={handleChange}
-        />
+          <div className="social-icons">
+            <a href="#" className="icon"><i className="fa-brands fa-google-plus-g"></i></a>
+            <a href="#" className="icon"><i className="fa-brands fa-facebook-f"></i></a>
+            <a href="#" className="icon"><i className="fa-brands fa-github"></i></a>
+            <a href="#" className="icon"><i className="fa-brands fa-linkedin-in"></i></a>
+          </div>
 
-        <input
-          name="email"
-          placeholder="อีเมล"
-          onChange={handleChange}
-        />
+          <span>or use your email for registration</span>
 
-        <input
-          name="password"
-          type="password"
-          placeholder="รหัสผ่าน"
-          onChange={handleChange}
-        />
+          <input type="text" placeholder="Name" />
+          <input type="email" placeholder="Email" />
+          <input type="password" placeholder="Password" />
 
-        <button type="submit">Register</button>
-      </form>
+          <button type="submit">Sign Up</button>
+
+          <p>
+            Already have an account?{" "}
+            <Link to="/">Sign In</Link>
+          </p>
+        </form>
+      </div>
     </div>
   );
 }

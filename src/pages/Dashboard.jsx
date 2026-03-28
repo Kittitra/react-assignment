@@ -1,20 +1,20 @@
-
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 function Dashboard() {
-  // const { user, logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
-  // if (!user) {
-  //   return <h2>กรุณาเข้าสู่ระบบ</h2>;
-  // }
+  if (!user) {
+    return <h2>กรุณาเข้าสู่ระบบ</h2>;
+  }
 
   return (
     <div>
       <h2>Dashboard</h2>
 
-{/* 
       <p>ยินดีต้อนรับ: {user.email}</p>
 
-      <button onClick={logout}>Logout</button> */}
+      <button onClick={logout}>Logout</button>
 
       <hr />
 

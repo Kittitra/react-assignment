@@ -1,5 +1,7 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { Link } from "react-router-dom";
+import "./StyleLoginAndRegis.css";
 
 function Login() {
   const { login } = useContext(AuthContext);
@@ -17,27 +19,34 @@ function Login() {
     alert("Login สำเร็จ");
   };
 
-  return (
-    <div>
-      <h2>เข้าสู่ระบบ</h2>
+   return (
+    <div className="container">
+      <div className="form-container sign-in" style={{ width: "100%" }}>
+        <form>
+          <h1>Sign In</h1>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="อีเมล"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+          <div className="social-icons">
+            <a href="#" className="icon"><i className="fa-brands fa-google-plus-g"></i></a>
+            <a href="#" className="icon"><i className="fa-brands fa-facebook-f"></i></a>
+            <a href="#" className="icon"><i className="fa-brands fa-github"></i></a>
+            <a href="#" className="icon"><i className="fa-brands fa-linkedin-in"></i></a>
+          </div>
 
-        <input
-          type="password"
-          placeholder="รหัสผ่าน"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          <span>or use your email password</span>
 
-        <button type="submit">Login</button>
-      </form>
+          <input type="email" placeholder="Email" />
+          <input type="password" placeholder="Password" />
+
+          <a href="#">Forget Your Password?</a>
+
+          <button type="submit">Sign In</button>
+
+          <p>
+            Don't have an account?{" "}
+            <Link to="/register">Sign Up</Link>
+          </p>
+        </form>
+      </div>
     </div>
   );
 }

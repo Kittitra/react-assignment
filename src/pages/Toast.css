@@ -1,0 +1,59 @@
+/* Toast.css */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%); /* จัดให้อยู่กึ่งกลางแนวนอน */
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast-box {
+  background-color: #1a0a0a; /* สีน้ำตาลเข้มเกือบดำตามรูป */
+  color: #ffbaba; /* สีตัวอักษรชมพูอ่อน/แดง */
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: 1px solid #4a1a1a;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 350px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  animation: slideDown 0.4s ease-out;
+}
+
+.toast-box.success {
+  color: #baffc9; /* สีเขียวอ่อนสำหรับ success */
+  border-color: #1a4a1a;
+}
+
+.toast-icon {
+  background-color: #ff4d4d; /* สีวงกลมไอคอน */
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.toast-box.success .toast-icon {
+  background-color: #2ecc71;
+}
+
+/* แอนิเมชันตอนแสดงตัว */
+@keyframes slideDown {
+  from {
+    top: -50px;
+    opacity: 0;
+  }
+  to {
+    top: 20px;
+    opacity: 1;
+  }
+}

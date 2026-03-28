@@ -5,7 +5,7 @@ function DatePicker() {
   const [end, setEnd] = useState("");
 
   return (
-    <div className="flex flex-row gap-3">
+    <div>
       <label>วันเริ่ม</label>
       <input type="date" onChange={(e) => setStart(e.target.value)} />
 
