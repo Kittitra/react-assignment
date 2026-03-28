@@ -23,7 +23,7 @@ export const getRentals = async () => {
 // =======================
 //  GET ITEMS IN RENTAL
 // =======================
-export const getRentalItems = async (rentalId) => {
+export const getRental = async (rentalId) => {
   try {
     const res = await api.get(`/rental.php/items/${rentalId}`);
     return res.data;

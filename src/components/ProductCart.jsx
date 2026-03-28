@@ -7,7 +7,7 @@ function ProductCard({ product }) {
 
   return (
     <div className="w-fit flex flex-col gap-4 p-5 bg-gray-200 mt-10 rounded-xl">
-      <img src={product.image_url} alt="" className="w-50 h-50 rounded-md"/>
+      <img src={product.image_url} alt="" className="w-50 h-50 rounded-md object-cover"/>
       <h3>{product.product_name}</h3>
       <p>{product.rental_price_per_day} บาท/วัน</p>
 

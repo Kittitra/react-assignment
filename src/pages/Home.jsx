@@ -18,7 +18,7 @@ function Home() {
 
   return (
     <div>
-      <h1>สินค้าให้เช่า</h1>
+      <h1 className="text-3xl py-5">สินค้าให้เช่า</h1>
       <ProductList products={products} />
     </div>
   );

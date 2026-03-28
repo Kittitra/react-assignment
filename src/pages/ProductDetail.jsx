@@ -64,6 +64,7 @@ function ProductDetail() {
 
     setRentData(data);
     createRental(data);
+    alert("เช่าเสร็จสิ้น.");
   };
 
   return (
