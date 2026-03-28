@@ -1,12 +1,12 @@
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 
-function Cart() {
+function Rental() {
   const { cart, removeFromCart } = useContext(CartContext);
 
   return (
     <div>
-      <h2>ตะกร้า</h2>
+      <h2>สินค้าที่ถูกจอง</h2>
 
       {cart.map((item) => (
         <div key={item.id}>
@@ -20,4 +20,4 @@ function Cart() {
   );
 }
 
-export default Cart;
+export default Rental;

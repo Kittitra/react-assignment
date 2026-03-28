@@ -7,6 +7,8 @@ function ProductDetail() {
   const { id } = useParams();
 
   const [product, setProduct] = useState({});
+  const [start, setStart] = useState("");
+  const [end, setEnd] = useState("");
   
   useEffect(() => {
     getProductById(id).then((data) => {
@@ -15,17 +17,29 @@ function ProductDetail() {
   }, [id]);
 
   return (
-    <div className="flex flex-col ">
-      <h2>Product Detail</h2>
-      <span>
-        {product.product_name}
-      </span>
-      <span>
-        {product.description}
-      </span>
-      <DatePicker />
+    <div className="flex flex-col justify-center items-center gap-5">
 
-      <button>เพิ่มลงตะกร้า</button>
+      <div className="flex flex-row gap-3">
+        <label>วันเริ่ม</label>
+        <input type="date" onChange={(e) => setStart(e.target.value)} />
+
+        <label>วันคืน</label>
+        <input type="date" onChange={(e) => setEnd(e.target.value)} />
+      </div>
+
+      <h2>Product Detail</h2>
+      <img src={product.img} alt="" className="w-50 h-50 rounded-md"/>
+      <span>
+        ชื่อสินค้า: {product.product_name}
+      </span>
+      <span>
+        คำอธิบาย: {product.description}
+      </span>
+      <span>
+        ค่าเช่าต่อวัน: {product.rental_price_per_day}
+      </span>
+
+      <button className="bg-purple-300 rounded-md p-3 hover:cursor-pointer">เช่า</button>
     </div>
   );
 }
