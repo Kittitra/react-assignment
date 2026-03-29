@@ -39,7 +39,10 @@ export const getProductById = async (id) => {
 export const createProduct = async (data) => {
     try {
         const res = await api.post("/product.php", data);
-        if (res.status !== 200) throw new Error("Creation failed");
+        if (!res.data.success) {
+            throw new Error("Insert failed");
+        }
+
         return res.data;
     } catch (error) {
         console.error("Create Product Error:", error);
@@ -55,7 +58,9 @@ export const createProduct = async (data) => {
 export const updateProduct = async (id, data) => {
     try {
         const res = await api.put(`/product.php/${id}`, data);
-        if (res.status !== 200) throw new Error("Update failed");
+        if (res.status !== 200 && res.status !== 204) {
+            throw new Error("Update failed");
+        }
         return res.data;
     } catch (error) {
         console.error("Update Product Error:", error);

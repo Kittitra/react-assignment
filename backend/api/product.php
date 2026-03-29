@@ -17,12 +17,11 @@ $uri = $_SERVER['REQUEST_URI'];
 
 $data = json_decode(file_get_contents("php://input"), true) ?? [];
 
-
 // =============================
 // GET ALL
 // GET /api/product.php
 // =============================
-if($method == "GET" && preg_match('#/api/product.php$#',$uri)){
+if ($method == "GET" && preg_match('#/api/product.php$#', $uri)) {
 
     echo json_encode($product->getAll());
     exit;
@@ -33,13 +32,13 @@ if($method == "GET" && preg_match('#/api/product.php$#',$uri)){
 // GET BY ID
 // GET /api/product.php/1
 // =============================
-if($method == "GET" && preg_match('#/api/product.php/([0-9]+)$#',$uri,$matches)){
+if ($method == "GET" && preg_match('#/api/product.php/([0-9]+)$#', $uri, $matches)) {
 
     $id = $matches[1];
 
     $result = $product->getById($id);
 
-    echo json_encode($result ?: ["message"=>"Product not found"]);
+    echo json_encode($result ?: ["message" => "Product not found"]);
     exit;
 }
 
@@ -48,17 +47,16 @@ if($method == "GET" && preg_match('#/api/product.php/([0-9]+)$#',$uri,$matches))
 // CREATE
 // POST /api/product.php
 // =============================
-if($method == "POST" && preg_match('#/api/product.php$#',$uri)){
-
+if ($method == "POST") {
+    $image = !empty($data['image']) ? $data['image'] : "";
     $result = $product->create(
         $data['product_name'],
         $data['description'],
         $data['category_id'],
         $data['rental_price_per_day'],
-        $data['image'] ?? null
+        $image
     );
-
-    echo json_encode(["success"=>$result]);
+    echo json_encode($result);
     exit;
 }
 
@@ -67,7 +65,7 @@ if($method == "POST" && preg_match('#/api/product.php$#',$uri)){
 // UPDATE
 // PUT /api/product.php/1
 // =============================
-if($method == "PUT" && preg_match('#/api/product.php/([0-9]+)$#',$uri,$matches)){
+if ($method == "PUT" && preg_match('#/api/product.php/([0-9]+)$#', $uri, $matches)) {
 
     $id = $matches[1];
 
@@ -80,7 +78,19 @@ if($method == "PUT" && preg_match('#/api/product.php/([0-9]+)$#',$uri,$matches))
         $data['image'] ?? null
     );
 
-    echo json_encode(["success"=>$result]);
+    if (!$result) {
+        $error = $stmt->errorInfo(); // ❗ ต้องมี stmt จาก create()
+        echo json_encode([
+            "success" => false,
+            "error" => $error,
+            "data" => $data
+        ]);
+    } else {
+        echo json_encode([
+            "success" => true
+        ]);
+    }
+    exit;
     exit;
 }
 
@@ -89,12 +99,12 @@ if($method == "PUT" && preg_match('#/api/product.php/([0-9]+)$#',$uri,$matches))
 // DELETE
 // DELETE /api/product.php/1
 // =============================
-if($method == "DELETE" && preg_match('#/api/product.php/([0-9]+)$#',$uri,$matches)){
+if ($method == "DELETE" && preg_match('#/api/product.php/([0-9]+)$#', $uri, $matches)) {
 
     $id = $matches[1];
 
     $result = $product->delete($id);
 
-    echo json_encode(["success"=>$result]);
+    echo json_encode(["success" => $result]);
     exit;
 }

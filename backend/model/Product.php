@@ -11,27 +11,18 @@ class Product
         $this->conn = $db;
     }
 
-    // 🔹 GET ALL (JOIN CATEGORY)
+    // GET ALL (JOIN CATEGORY)
     public function getAll()
     {
 
-        $sql = "SELECT 
-    p.product_id, 
-    p.product_name,
-    p.description,
-    p.rental_price_per_day,
-    p.image,
-    c.category_name
-FROM products p
-LEFT JOIN categories c 
-ON p.category_id = c.category_id";
+        $sql = "SELECT p.product_id, p.product_name, p.description, p.rental_price_per_day, p.image, c.category_name FROM products p LEFT JOIN categories c ON p.category_id = c.category_id";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // 🔹 GET BY ID
+    //  GET BY ID
     public function getById($id)
     {
 
@@ -45,10 +36,11 @@ ON p.category_id = c.category_id";
     }
 
     // CREATE
-    public function create($name, $category, $price, $description, $image = null) {
+    public function create($name, $description, $category, $price, $image = null)
+{
     $sql = "INSERT INTO products 
-        (product_name, category_id, description, rental_price_per_day, image)
-        VALUES (:name, :category, :description, :price, :image)";
+    (product_name, category_id, description, rental_price_per_day, image)
+    VALUES (:name, :category, :description, :price, :image)";
 
     $stmt = $this->conn->prepare($sql);
 
@@ -58,7 +50,14 @@ ON p.category_id = c.category_id";
     $stmt->bindParam(":price", $price);
     $stmt->bindParam(":image", $image);
 
-    return $stmt->execute();
+    if (!$stmt->execute()) {
+        return [
+            "success" => false,
+            "error" => $stmt->errorInfo()
+        ];
+    }
+
+    return ["success" => true];
 }
 
     // UPDATE
