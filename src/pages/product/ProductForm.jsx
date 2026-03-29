@@ -112,88 +112,109 @@ function ProductForm({ onSuccess, editing, setEditing }) {
   // UI
   // =========================
   return (
-    <form onSubmit={handleSubmit} style={{ width: "400px" }} className="flex flex-col gap-3">
-      <h3>{editing ? "แก้ไขสินค้า" : "เพิ่มสินค้า"}</h3>
+    <div className="flex justify-center items-start p-6">
+        <div className="bg-white border border-gray-200 rounded-xl p-7 w-full max-w-md">
 
-      {/* status */}
-      {message && (
-        <div style={{
-          padding: "10px",
-          marginBottom: "10px",
-          background: status === "success" ? "#d4edda" : "#f8d7da",
-          color: status === "success" ? "#155724" : "#721c24",
-          borderRadius: "5px"
-        }}>
-          {message}
-        </div>
-      )}
-        <div>
-            <label >ชื่อสินค้า: </label>
-            {/* product name */}
+        <h3 className="text-lg font-medium mb-6">
+            {editing ? "แก้ไขสินค้า" : "เพิ่มสินค้า"}
+        </h3>
+
+        {/* notification */}
+        {message && (
+            <div className={`text-sm px-4 py-3 rounded-lg mb-5 ${
+            status === "success"
+                ? "bg-green-50 text-green-700"
+                : "bg-red-50 text-red-700"
+            }`}>
+            {message}
+            </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+
+            {/* ชื่อสินค้า */}
+            <div className="flex flex-col gap-1">
+            <label className="text-sm text-gray-500">ชื่อสินค้า</label>
             <input
                 name="product_name"
-                placeholder="ชื่อสินค้า"
+                placeholder="กรอกชื่อสินค้า"
                 value={form.product_name}
                 onChange={handleChange}
+                className="border border-gray-200 rounded-lg px-3 py-2 text-sm w-full focus:outline-none focus:ring-1 focus:ring-gray-300"
             />
-        </div>
+            </div>
 
-         <div>
-            <label >ราคา/วัน: </label>
-            {/* price */}
-            <input
+            {/* ราคา + หมวดหมู่ */}
+            <div className="grid grid-cols-2 gap-3">
+            <div className="flex flex-col gap-1">
+                <label className="text-sm text-gray-500">ราคา / วัน (฿)</label>
+                <input
                 type="number"
                 name="rental_price_per_day"
-                placeholder="ราคา/วัน"
+                placeholder="0"
                 value={form.rental_price_per_day}
                 onChange={handleChange}
-            />
-         </div>
-         
-         <div>
-            <label >หมวดหมู่: </label>
-            {/* category */}
-            <input
+                className="border border-gray-200 rounded-lg px-3 py-2 text-sm w-full focus:outline-none focus:ring-1 focus:ring-gray-300"
+                />
+            </div>
+            <div className="flex flex-col gap-1">
+                <label className="text-sm text-gray-500">หมวดหมู่</label>
+                <input
                 name="category_id"
                 placeholder="category_id"
                 value={form.category_id}
                 onChange={handleChange}
-            />
-         </div>
+                className="border border-gray-200 rounded-lg px-3 py-2 text-sm w-full focus:outline-none focus:ring-1 focus:ring-gray-300"
+                />
+            </div>
+            </div>
 
-        <div>
-            <label >รายละเอียด: </label>
-            {/* description */}
-            <input
+            {/* รายละเอียด */}
+            <div className="flex flex-col gap-1">
+            <label className="text-sm text-gray-500">รายละเอียด</label>
+            <textarea
                 name="description"
-                placeholder="รายละเอียด"
+                placeholder="รายละเอียดสินค้า..."
                 value={form.description}
                 onChange={handleChange}
+                rows={3}
+                className="border border-gray-200 rounded-lg px-3 py-2 text-sm w-full resize-none focus:outline-none focus:ring-1 focus:ring-gray-300"
             />
-        </div>
-         
-         <div>
-            <label >Image URL: </label>
-            {/* image */}
+            </div>
+
+            {/* Image URL */}
+            <div className="flex flex-col gap-1">
+            <label className="text-sm text-gray-500">Image URL</label>
             <input
                 name="image"
-                placeholder="Image URL"
+                placeholder="https://..."
                 value={form.image}
                 onChange={handleChange}
+                className="border border-gray-200 rounded-lg px-3 py-2 text-sm w-full focus:outline-none focus:ring-1 focus:ring-gray-300"
             />
-         </div>
+            </div>
 
-      {/* buttons */}
-      <div style={{ marginTop: "10px" }} className="flex w-full justify-between flex-row">
-        <button type="submit" disabled={loading}>
-          {loading ? "กำลังบันทึก..." : editing ? "อัปเดต" : "เพิ่ม"}
-        </button>
+            {/* buttons */}
+            <div className="flex gap-3 pt-2 border-t border-gray-100">
+            <button
+                type="submit"
+                disabled={loading}
+                className="flex-1 bg-gray-900 text-white rounded-lg py-2 text-sm hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+                {loading ? "กำลังบันทึก..." : editing ? "อัปเดต" : "เพิ่มสินค้า"}
+            </button>
+            <button
+                type="button"
+                onClick={resetForm}
+                className="px-4 py-2 text-sm text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+                ล้างค่า
+            </button>
+            </div>
 
-        <button type="button" onClick={resetForm}>
-          ล้างค่า
-        </button>
-      </div>
-    </form>
+        </form>
+        </div>
+    </div>
   );
 }
 

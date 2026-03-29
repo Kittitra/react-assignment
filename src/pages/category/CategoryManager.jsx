@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import CategoryForm from "./CategoryForm";
-import {
-  getCategories,
-  deleteCategory
-} from "../../services/categoryService";
+import { getCategories, deleteCategory } from "../../services/categoryService";
 
 function CategoryManager() {
   const [categories, setCategories] = useState([]);
@@ -16,123 +13,109 @@ function CategoryManager() {
       setCategories(data);
     } catch (err) {
       console.error(err);
-      alert("โหลดข้อมูลไม่สำเร็จ");
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  useEffect(() => { fetchData(); }, []);
 
   const handleDelete = async (id) => {
     if (!window.confirm("ยืนยันการลบ?")) return;
-
     try {
       await deleteCategory(id);
       fetchData();
     } catch (err) {
       console.error(err);
-      alert("ลบไม่สำเร็จ");
     }
   };
 
-  // ======================
-  // OPEN / CLOSE MODAL
-  // ======================
-  const openAdd = () => {
-    setEditing(null);
-    setShowModal(true);
-  };
-
-  const openEdit = (c) => {
-    setEditing(c);
-    setShowModal(true);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-    setEditing(null);
-  };
+  const openAdd = () => { setEditing(null); setShowModal(true); };
+  const openEdit = (c) => { setEditing(c); setShowModal(true); };
+  const closeModal = () => { setShowModal(false); setEditing(null); };
 
   return (
-    <div>
-      <h2>จัดการหมวดหมู่</h2>
+    <div className="p-6">
 
-      <button onClick={openAdd}>+ เพิ่มหมวดหมู่</button>
-      <table style={{ width: "100%", borderCollapse: "separate", borderSpacing: "0 8px", marginTop: "20px"}} border="1" cellPadding="10" width="100%">
-        <thead>
-          <tr>
-            <th style={thStyle}>ID</th>
-            <th style={thStyle}>Name</th>
-            <th style={thStyle}>Action</th>
-          </tr>
-        </thead>
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-medium">จัดการหมวดหมู่</h2>
+        <button
+          onClick={openAdd}
+          className="text-sm px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+        >
+          + เพิ่มหมวดหมู่
+        </button>
+      </div>
 
-        <tbody>
-          {categories.map((c) => (
-            <tr key={c.category_id} style={{ background: "#f9f9f9" }}>
-              <td style={tdStyle}>{c.category_id}</td>
-              <td style={tdStyle}>{c.category_name}</td>
-              <td style={tdStyle}>
-                <button className="mr-10" onClick={() => openEdit(c)}>แก้ไข</button>
-                <button onClick={() => handleDelete(c.category_id)}>ลบ</button>
-              </td>
+      {/* Table */}
+      <div className="border border-gray-200 rounded-xl overflow-hidden">
+        <table className="w-full text-sm">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="text-left px-4 py-3 text-gray-500 font-medium">ID</th>
+              <th className="text-left px-4 py-3 text-gray-500 font-medium">ชื่อหมวดหมู่</th>
+              <th className="text-left px-4 py-3 text-gray-500 font-medium">จัดการ</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {categories.length === 0 ? (
+              <tr>
+                <td colSpan="3" className="px-4 py-8 text-center text-gray-400">
+                  ไม่มีข้อมูลหมวดหมู่
+                </td>
+              </tr>
+            ) : (
+              categories.map((c) => (
+                <tr key={c.category_id} className="border-t border-gray-100 hover:bg-gray-50">
+                  <td className="px-4 py-3 text-gray-400 text-xs">{c.category_id}</td>
+                  <td className="px-4 py-3 font-medium">{c.category_name}</td>
+                  <td className="px-4 py-3">
+                    <button
+                      onClick={() => openEdit(c)}
+                      className="text-xs px-3 py-1.5 border border-gray-200 rounded-md hover:bg-gray-100 mr-2 transition-colors"
+                    >
+                      แก้ไข
+                    </button>
+                    <button
+                      onClick={() => handleDelete(c.category_id)}
+                      className="text-xs px-3 py-1.5 border border-red-200 text-red-500 rounded-md hover:bg-red-50 transition-colors"
+                    >
+                      ลบ
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
 
-      {/* MODAL */}
+      {/* Modal */}
       {showModal && (
-        <div style={overlayStyle}>
-          <div style={modalStyle}>
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-2xl p-6 w-[400px]">
+            <div className="flex justify-between items-center mb-5">
+              <h3 className="text-lg font-medium">
+                {editing ? "แก้ไขหมวดหมู่" : "เพิ่มหมวดหมู่"}
+              </h3>
+              <button
+                onClick={closeModal}
+                className="text-gray-400 hover:text-gray-600 text-xl leading-none"
+              >
+                ✕
+              </button>
+            </div>
+
             <CategoryForm
-              onSuccess={() => {
-                fetchData();
-                closeModal();
-              }}
+              onSuccess={() => { fetchData(); closeModal(); }}
               editing={editing}
               setEditing={setEditing}
             />
-
-            <button onClick={closeModal} style={{ marginTop: "10px" }}>
-              ปิด
-            </button>
           </div>
         </div>
       )}
+
     </div>
   );
 }
-
-const thStyle = {
-  textAlign: "left",
-  padding: "10px",
-  borderBottom: "2px solid #ccc"
-};
-
-const tdStyle = {
-  padding: "10px",
-  background: "white"
-};
-
-const overlayStyle = {
-  position: "fixed",
-  top: 0,
-  left: 0,
-  width: "100%",
-  height: "100%",
-  background: "rgba(0,0,0,0.5)",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center"
-};
-
-const modalStyle = {
-  background: "white",
-  padding: "20px",
-  borderRadius: "8px",
-  minWidth: "300px"
-};
 
 export default CategoryManager;

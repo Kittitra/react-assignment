@@ -1,22 +1,12 @@
 import { useState, useEffect } from "react";
-import {
-  createCategory,
-  updateCategory
-} from "../../services/categoryService";
+import { createCategory, updateCategory } from "../../services/categoryService";
 
 function CategoryForm({ onSuccess, editing, setEditing }) {
-  const [form, setForm] = useState({
-    category_id: null,
-    category_name: ""
-  });
-
+  const [form, setForm] = useState({ category_id: null, category_name: "" });
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState(""); // success | error
+  const [status, setStatus] = useState("");
   const [message, setMessage] = useState("");
 
-  // =========================
-  // โหลดข้อมูลตอนแก้ไข
-  // =========================
   useEffect(() => {
     if (editing) {
       setForm({
@@ -26,66 +16,35 @@ function CategoryForm({ onSuccess, editing, setEditing }) {
     }
   }, [editing]);
 
-  // =========================
-  // handle change
-  // =========================
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value
-    });
-  };
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-  // =========================
-  // reset form
-  // =========================
   const resetForm = () => {
-    setForm({
-      category_id: null,
-      category_name: ""
-    });
+    setForm({ category_id: null, category_name: "" });
     setEditing(null);
   };
 
-  // =========================
-  // submit
-  // =========================
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // validate
     if (!form.category_name.trim()) {
       setStatus("error");
       setMessage("กรุณากรอกชื่อหมวดหมู่");
       return;
     }
-
-    const payload = {
-      category_name: form.category_name.trim()
-    };
-
     try {
       setLoading(true);
       setStatus("");
       setMessage("");
-
       if (editing) {
-        await updateCategory(form.category_id, payload);
+        await updateCategory(form.category_id, { category_name: form.category_name.trim() });
         setStatus("success");
         setMessage("แก้ไขหมวดหมู่สำเร็จ");
       } else {
-        await createCategory(payload);
+        await createCategory({ category_name: form.category_name.trim() });
         setStatus("success");
         setMessage("เพิ่มหมวดหมู่สำเร็จ");
       }
-
-      setTimeout(() => {
-        resetForm();
-        onSuccess();
-      }, 800);
-
+      setTimeout(() => { resetForm(); onSuccess(); }, 800);
     } catch (err) {
-      console.error("Submit Error:", err);
       setStatus("error");
       setMessage("บันทึกไม่สำเร็จ");
     } finally {
@@ -94,40 +53,44 @@ function CategoryForm({ onSuccess, editing, setEditing }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ width: "300px" }}>
-      <h3>{editing ? "แก้ไขหมวดหมู่" : "เพิ่มหมวดหมู่"}</h3>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
 
-      {/* status */}
       {message && (
-        <div style={{
-          padding: "10px",
-          marginBottom: "10px",
-          background: status === "success" ? "#d4edda" : "#f8d7da",
-          color: status === "success" ? "#155724" : "#721c24",
-          borderRadius: "5px"
-        }}>
+        <div className={`text-sm px-4 py-3 rounded-lg ${
+          status === "success" ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"
+        }`}>
           {message}
         </div>
       )}
 
-      {/* category name */}
-      <input
-        name="category_name"
-        placeholder="ชื่อหมวดหมู่"
-        value={form.category_name}
-        onChange={handleChange}
-      />
+      <div className="flex flex-col gap-1">
+        <label className="text-sm text-gray-500">ชื่อหมวดหมู่</label>
+        <input
+          name="category_name"
+          placeholder="กรอกชื่อหมวดหมู่"
+          value={form.category_name}
+          onChange={handleChange}
+          className="border border-gray-200 rounded-lg px-3 py-2 text-sm w-full focus:outline-none focus:ring-1 focus:ring-gray-300"
+        />
+      </div>
 
-      {/* buttons */}
-      <div style={{ marginTop: "10px" }}>
-        <button type="submit" disabled={loading}>
-          {loading ? "กำลังบันทึก..." : editing ? "อัปเดต" : "เพิ่ม"}
+      <div className="flex gap-3 pt-2 border-t border-gray-100">
+        <button
+          type="submit"
+          disabled={loading}
+          className="flex-1 bg-gray-900 text-white rounded-lg py-2 text-sm hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          {loading ? "กำลังบันทึก..." : editing ? "อัปเดต" : "เพิ่มหมวดหมู่"}
         </button>
-
-        <button type="button" onClick={resetForm}>
+        <button
+          type="button"
+          onClick={resetForm}
+          className="px-4 py-2 text-sm text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+        >
           ล้างค่า
         </button>
       </div>
+
     </form>
   );
 }
