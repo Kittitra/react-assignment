@@ -31,6 +31,9 @@ function ProductDetail() {
     ? (new Date(end) - new Date(start)) / (1000 * 60 * 60 * 24)
     : 0;
 
+    const user = localStorage.getItem("user");
+    console.log(user)
+
   const Rental = () => {
     // Validation
     if (!start || !end) {

@@ -27,6 +27,9 @@ import ProductForm from "./pages/ProductForm";
 import ProductManager from "./pages/ProductManager";
 import Rental from "./pages/Rental";
 import RentalManager from "./pages/RentalManager";
+import AllLoginAndRegis from "./pages/AllLoginAndRegis";
+import OnRenting from "./pages/OnRenting";
+import HistoryRental from "./pages/HistoryRental";
 
 function App() {
   return (
@@ -39,20 +42,78 @@ function App() {
         {/* Main Content */}
         <div style={styles.content}>
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/rental" element={<Rental />} />
-            <Route path="/rental/:id" element={<RentalManager />} />
-            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/" element={
+              <ProtectedRoute adminOnly>
+                <Home />
+              </ProtectedRoute>
+              } />
+            <Route path="/product/:id" element={
+              <ProtectedRoute adminOnly>
+                <ProductDetail />
+              </ProtectedRoute>
+            } />
+            <Route path="/rental" element={
+              <ProtectedRoute adminOnly>
+                <Rental />
+              </ProtectedRoute>
+            } />
+            <Route path="/rental/:id" element={
+              <ProtectedRoute adminOnly>
+                <RentalManager />
+              </ProtectedRoute>
+              } />
+            <Route path="/checkout" element={
+              <ProtectedRoute adminOnly>
+                <Checkout />
+              </ProtectedRoute>
+            } />
 
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/login" element={
 
-            <Route path="/category-form" element={<CategoryForm />} />
-            <Route path="/category-manager" element={<CategoryManager />} />
-            <Route path="/product-form" element={<ProductForm />} />
-            <Route path="/product-manager" element={<ProductManager />} />
+              <AllLoginAndRegis />
+          } />
+            {/* <Route path="/register" element={<Register />} /> */}
+
+            <Route path="/onrenting" element={
+              <ProtectedRoute >
+                <OnRenting />
+              </ProtectedRoute>
+            } />
+
+            <Route path="/history-rental" element={
+              <ProtectedRoute >
+                <HistoryRental />
+              </ProtectedRoute>
+            } />
+
+
+
+            <Route path="/dashboard" element={
+              <ProtectedRoute adminOnly>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
+
+            <Route path="/category-form" element={
+              <ProtectedRoute adminOnly>
+                <CategoryForm />
+              </ProtectedRoute>
+            } />
+            <Route path="/category-manager" element={
+              <ProtectedRoute adminOnly>
+                <CategoryManager />
+              </ProtectedRoute>
+            } />
+            <Route path="/product-form" element={
+              <ProtectedRoute adminOnly>
+                <ProductForm />
+              </ProtectedRoute>
+            } />
+            <Route path="/product-manager" element={
+              <ProtectedRoute adminOnly>
+                <ProductManager />
+              </ProtectedRoute>
+            } />
 
             {/* Protected */}
             {/* <Route

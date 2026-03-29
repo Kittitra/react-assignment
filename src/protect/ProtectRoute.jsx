@@ -1,17 +1,18 @@
-import { useContext } from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { Navigate } from "react-router-dom";
 
-function ProtectedRoute({ children }) {
-  const { user } = useContext(AuthContext);
-  const location = useLocation();
+function ProtectedRoute({ children, adminOnly = false }) {
+  const user = JSON.parse(localStorage.getItem("user"));
 
-  // ถ้ายังไม่ login → redirect ไปหน้า login
+  // ไม่ได้ login
   if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/login" replace />;
   }
 
-  // ถ้า login แล้ว → เข้าได้
+  // เป็น user ธรรมดา แต่พยายามเข้าหน้าที่เป็น adminOnly
+  if (adminOnly && user.role !== "admin") {
+    return <Navigate to="/onrenting" replace />;
+  }
+
   return children;
 }
 
