@@ -23,7 +23,7 @@ export default function Navbar() {
     // ลบข้อมูล user ออกจากเครื่อง Browser
     localStorage.removeItem("user");
     // พาผู้ใช้กลับไปหน้า Login หรือ Home
-    window.location.href = "/login"; 
+    window.location.href = "/allLoginAndRegis"; 
   };
 
   return (

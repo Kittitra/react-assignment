@@ -26,6 +26,7 @@ import CategoryManager from "./pages/CategoryManager";
 import ProductForm from "./pages/ProductForm";
 import ProductManager from "./pages/ProductManager";
 import Rental from "./pages/Rental";
+import AllLoginAndRegis from "./pages/AllLoginAndRegis";
 
 function App() {
   return (
@@ -43,8 +44,7 @@ function App() {
             <Route path="/rental" element={<Rental />} />
             <Route path="/checkout" element={<Checkout />} />
 
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/allLoginAndRegis" element={<AllLoginAndRegis />} />
             <Route path="/dashboard" element={<Dashboard />} />
 
             <Route path="/category-form" element={<CategoryForm />} />
