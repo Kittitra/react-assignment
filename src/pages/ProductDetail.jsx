@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import DatePicker from "../components/DatePicker";
 import { useEffect, useState } from "react";
-import { getProductById } from "../service/axios";
+import { getProductById } from "../services/productService";
 
 function ProductDetail() {
   const { id } = useParams();

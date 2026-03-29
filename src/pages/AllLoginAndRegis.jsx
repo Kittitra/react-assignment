@@ -1,90 +1,102 @@
 import { useState } from "react";
-// นำเข้าฟังก์ชันจาก service ที่อยู่ในโฟลเดอร์ใกล้ๆ กัน
-import { login, register } from "../service/customerService"; 
 import "./StyleLoginAndRegis.css";
 import "./Toast.css";
 
 export default function AllLoginAndRegis() {
   const [isActive, setIsActive] = useState(false);
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-    email: "",
-    phone: ""
-  });
+  const [isReset, setIsReset] = useState(false);
+  const [modalMsg, setModalMsg] = useState("");
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
 
   const showNotification = (msg, type) => {
     setToast({ show: true, message: msg, type: type });
-    setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
+    // หายไปเองหลังจาก 3 วินาที
+    setTimeout(() => {
+      setToast({ show: false, message: "", type: "" });
+    }, 3000);
   };
+  
+  // สร้าง State สำหรับเก็บข้อมูล Form
+  const [formData, setFormData] = useState({
+    name: "",
+    username: "",
+    password: "",
+    email: "", // เพิ่มเพื่อให้ตรงกับ API Register
+    phone: ""  // เพิ่มเพื่อให้ตรงกับ API Register
+  });
+
+  const [newPass, setNewPass] = useState("");
+  const [confirmPass, setConfirmPass] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // แก้ไขฟังก์ชัน Register ให้เรียกใช้ Service
+  // ฟังก์ชัน Register
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const dataToSubmit = {
-        customer_name: formData.username,
-        password: formData.password,
-        email: formData.email || `${formData.username}@mail.com`,
-        phone: formData.phone || "0000000000"
-      };
-
-      const result = await register(dataToSubmit);
-
+      const response = await fetch("http://localhost/backend/api/customers.php/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customer_name: formData.username,
+          password: formData.password,
+          email: formData.email || `${formData.username}@mail.com`, // ค่าสมมติถ้าไม่มี input
+          phone: formData.phone || "0000000000"
+        }),
+      });
+      const result = await response.json();
       if (result.success) {
-          // สร้าง object ข้อมูลผู้ใช้จำลองขึ้นมาเอง เพื่อให้ Navbar มีชื่อไปโชว์
-          const newUser = {
-              customer_name: formData.username, // ใช้ username ที่กรอกในฟอร์ม
-              email: formData.email
-          };
-          
-          localStorage.setItem("user", JSON.stringify(newUser)); 
-          showNotification("สมัครสมาชิกสำเร็จ!", "success");
-          
-          // ใช้คำสั่งนี้เพื่อให้หน้าเว็บโหลดใหม่และ Navbar ดึงค่าล่าสุดมาแสดง
-          setTimeout(() => window.location.href = "/", 1000);
-      }
-    } catch (error) {
-      showNotification("ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้", "error");
-    }
-  };
-
-  // แก้ไขฟังก์ชัน Login ให้เรียกใช้ Service
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const result = await login({
-        email: formData.email,
-        password: formData.password
-      }); // เรียกใช้ login จาก service
-
-      if (result.success) {
-        localStorage.setItem("user", JSON.stringify(result.user));
-        showNotification("เข้าสู่ระบบสำเร็จ!", "success");
+        showNotification("สมัครสมาชิกสำเร็จ! กำลังพาท่านไปหน้าหลัก", "success");
         setTimeout(() => window.location.href = "/", 1000);
       } else {
-        showNotification("อีเมลหรือรหัสผ่านไม่ถูกต้อง", "error");
+        showNotification("อีเมลหรือรหัสผ่านซ้ำกัน โปรดตรวจสอบแล้วลองอีกครั้ง", "error");
       }
     } catch (error) {
       showNotification("ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้", "error");
     }
   };
+
+  // ฟังก์ชัน Login
+  const handleLogin = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await fetch("http://localhost/backend/api/customers.php/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: formData.email,
+        password: formData.password
+      }),
+    });
+    const result = await response.json();
+
+    if (result.success) {
+      // เก็บข้อมูลผู้ใช้ลง localStorage
+      localStorage.setItem("user", JSON.stringify(result.user));
+      showNotification("เข้าสู่ระบบสำเร็จ!", "success");
+      setTimeout(() => window.location.href = "/", 1000);
+    } else {
+      showNotification("อีเมลหรือรหัสผ่านไม่ถูกต้อง", "error");
+    }
+  } catch (error) {
+    showNotification("ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้", "error");
+  }
+};
 
   return (
     <div className="container-body">
-      {toast.show && (
-        <div className="toast-container">
-          <div className={`toast-box ${toast.type}`}>
-            <div className="toast-icon">{toast.type === "success" ? "✓" : "!"}</div>
-            <div className="toast-text">{toast.message}</div>
-          </div>
-        </div>
-      )}
+        {toast.show && (
+            <div className="toast-container">
+            <div className={`toast-box ${toast.type}`}>
+                <div className="toast-icon">
+                {toast.type === "success" ? "✓" : "!"}
+                </div>
+                <div className="toast-text">{toast.message}</div>
+            </div>
+            </div>
+        )}
       <div className={`container ${isActive ? "active" : ""}`}>
         
         {/* REGISTER */}
@@ -92,37 +104,40 @@ export default function AllLoginAndRegis() {
           <form onSubmit={handleRegister}>
             <h1>Create Account</h1>
             <span>Fill your details</span>
-            <input name="username" type="text" placeholder="Username" value={formData.username || ""} onChange={handleChange} required />
-            <input name="phone" type="text" placeholder="Phone" value={formData.phone || ""} onChange={handleChange} required/>
-            <input name="email" type="email" placeholder="Email" value={formData.email || ""} onChange={handleChange} />
-            <input name="password" type="password" placeholder="Password" value={formData.password || ""} onChange={handleChange} required />
+            <input name="username" type="text" placeholder="Username" onChange={handleChange} required />
+            <input name="phone" type="text" placeholder="Phone" onChange={handleChange} required/>
+            <input name="email" type="email" placeholder="Email" onChange={handleChange} />
+            <input name="password" type="password" placeholder="Password" onChange={handleChange} required />
             <button type="submit">Sign Up</button>
           </form>
         </div>
 
         {/* LOGIN */}
         <div className="form-container sign-in">
-          <form onSubmit={handleLogin}>
-            <h1>Sign In</h1>
-            <span>Use your email for login</span>
-            <input 
-              name="email" 
-              type="email" 
-              placeholder="Email Address" 
-              value={formData.email || ""} 
-              onChange={handleChange} 
-              required 
-            />
-            <input 
-              name="password" 
-              type="password" 
-              placeholder="Password" 
-              value={formData.password || ""}
-              onChange={handleChange} 
-              required 
-            />
-            <button type="submit">Sign In</button>
-          </form>
+            <form onSubmit={handleLogin}>
+                <h1>Sign In</h1>
+                <span>Use your email for login</span>
+                
+                <input 
+                    name="email" 
+                    type="email" 
+                    placeholder="Email Address" 
+                    value={formData.email || ""} 
+                    onChange={handleChange} 
+                    required 
+                />
+                
+                <input 
+                    name="password" 
+                    type="password" 
+                    placeholder="Password" 
+                    value={formData.password || ""}
+                    onChange={handleChange} 
+                    required 
+                />
+
+                <button type="submit">Sign In</button>
+            </form>
         </div>
 
         {/* TOGGLE PANEL */}
