@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
-import { getProductById } from "../services/productService";
-import { getProductItems } from "../services/productItemService";
-import { createRental } from "../services/rentalService";
-import { getCustomerByEmail } from "../services/customerService"; // ✅ เพิ่ม
+import { getProductById } from "../../services/productService";
+import { getProductItems } from "../../services/productItemService";
+import { createRental } from "../../services/rentalService";
+import { getCustomerByEmail } from "../../services/customerService"; // ✅ เพิ่ม
 
 function ProductDetail() {
   const { id } = useParams();
