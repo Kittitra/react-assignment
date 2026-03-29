@@ -44,7 +44,6 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
 
             {/* category */}
-            <Route path="/category-form" element={<CategoryForm />} />
             <Route path="/category-manager" element={<CategoryManager />} />
           </Routes>
         </div>
