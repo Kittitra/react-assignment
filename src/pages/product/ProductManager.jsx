@@ -99,7 +99,7 @@ function ProductManager() {
               setEditing={setEditing}
             />
 
-            <button onClick={closeModal}>ปิด</button>
+            <button onClick={closeModal} className="mt-5">ปิด</button>
           </div>
         </div>
       )}
@@ -125,7 +125,7 @@ const modalStyle = {
   background: "#fff",
   padding: "20px",
   borderRadius: "10px",
-  width: "320px"
+  width: "520px"
 };
 
 export default ProductManager;

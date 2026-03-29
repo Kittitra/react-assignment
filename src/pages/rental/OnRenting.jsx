@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { getProducts } from '../services/productService';
-import { getRentalItems } from '../services/rentalItem';
+import { getProducts } from '../../services/productService';
+import { getRentalItems } from '../../services/rentalItem';
 
 const OnRenting = () => {
     const [products, setProducts] = useState([]);

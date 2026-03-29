@@ -1,23 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-// import Navbar from "./components/Navbar";
-// import Footer from "./components/Footer";
-
-// import Home from "./pages/Home";
-// import ProductDetail from "./pages/ProductDetail";
-// import Cart from "./pages/Cart";
-// import Checkout from "./pages/Checkout";
-// import Login from "./pages/Login";
-// import Register from "./pages/Register";
-// import Dashboard from "./pages/Dashboard";
-
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import ProductDetail from "./pages/product/ProductDetail";
-import Cart from "./pages/Rental";
-import Checkout from "./pages/CheckOut";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./protect/ProtectRoute";
 import Footer from "./components/Footer";
@@ -25,10 +10,10 @@ import CategoryForm from "./pages/category/CategoryForm";
 import CategoryManager from "./pages/category/CategoryManager";
 import ProductForm from "./pages/product/ProductForm";
 import ProductManager from "./pages/product/ProductManager";
-import Rental from "./pages/Rental";
-import RentalManager from "./pages/RentalManager";
+import Rental from "./pages/rental/Rental";
+import RentalManager from "./pages/rental/RentalManager";
 import AllLoginAndRegis from "./pages/AllLoginAndRegis";
-import OnRenting from "./pages/OnRenting";
+import OnRenting from "./pages/rental/OnRenting";
 import HistoryRental from "./pages/HistoryRental";
 import AddAdmin from "./pages/AddAdmin";
 
@@ -63,11 +48,6 @@ function App() {
                 <RentalManager />
               </ProtectedRoute>
               } />
-            <Route path="/checkout" element={
-              <ProtectedRoute adminOnly>
-                <Checkout />
-              </ProtectedRoute>
-            } />
 
             <Route path="/login" element={
 

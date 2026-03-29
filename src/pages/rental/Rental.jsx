@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
-import { getRentals } from "../services/rentalService";
-import { getRentalItems } from "../services/rentalItem";
-import { getProducts } from "../services/productService";
+import { getRentals } from "../../services/rentalService";
+import { getRentalItems } from "../../services/rentalItem";
+import { getProducts } from "../../services/productService";
 import { Link } from "react-router-dom";
 
 function Rental() {

@@ -1,10 +1,10 @@
 import React from 'react'
 import { useParams } from 'react-router-dom';
 import { useEffect, useMemo, useState } from "react";
-import { getRentals, returnRental } from "../services/rentalService";
-import { getRentalItems } from "../services/rentalItem";
-import { getProducts } from "../services/productService";
-import { getProductItems } from '../services/productItemService';
+import { getRentals, returnRental } from "../../services/rentalService";
+import { getRentalItems } from "../../services/rentalItem";
+import { getProducts } from "../../services/productService";
+import { getProductItems } from '../../services/productItemService';
 
 const RentalManager = () => {
     const [productsItems, setProductsItems] = useState([]);

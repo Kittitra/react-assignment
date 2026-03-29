@@ -112,7 +112,7 @@ function ProductForm({ onSuccess, editing, setEditing }) {
   // UI
   // =========================
   return (
-    <form onSubmit={handleSubmit} style={{ width: "300px" }}>
+    <form onSubmit={handleSubmit} style={{ width: "400px" }} className="flex flex-col gap-3">
       <h3>{editing ? "แก้ไขสินค้า" : "เพิ่มสินค้า"}</h3>
 
       {/* status */}
@@ -127,50 +127,64 @@ function ProductForm({ onSuccess, editing, setEditing }) {
           {message}
         </div>
       )}
+        <div>
+            <label >ชื่อสินค้า: </label>
+            {/* product name */}
+            <input
+                name="product_name"
+                placeholder="ชื่อสินค้า"
+                value={form.product_name}
+                onChange={handleChange}
+            />
+        </div>
 
-      {/* product name */}
-      <input
-        name="product_name"
-        placeholder="ชื่อสินค้า"
-        value={form.product_name}
-        onChange={handleChange}
-      />
+         <div>
+            <label >ราคา/วัน: </label>
+            {/* price */}
+            <input
+                type="number"
+                name="rental_price_per_day"
+                placeholder="ราคา/วัน"
+                value={form.rental_price_per_day}
+                onChange={handleChange}
+            />
+         </div>
+         
+         <div>
+            <label >หมวดหมู่: </label>
+            {/* category */}
+            <input
+                name="category_id"
+                placeholder="category_id"
+                value={form.category_id}
+                onChange={handleChange}
+            />
+         </div>
 
-      {/* price */}
-      <input
-        type="number"
-        name="rental_price_per_day"
-        placeholder="ราคา/วัน"
-        value={form.rental_price_per_day}
-        onChange={handleChange}
-      />
-
-      {/* category */}
-      <input
-        name="category_id"
-        placeholder="category_id (1 หรือ 2)"
-        value={form.category_id}
-        onChange={handleChange}
-      />
-
-      {/* description */}
-      <input
-        name="description"
-        placeholder="รายละเอียด"
-        value={form.description}
-        onChange={handleChange}
-      />
-
-      {/* image */}
-      <input
-        name="image"
-        placeholder="Image URL"
-        value={form.image}
-        onChange={handleChange}
-      />
+        <div>
+            <label >รายละเอียด: </label>
+            {/* description */}
+            <input
+                name="description"
+                placeholder="รายละเอียด"
+                value={form.description}
+                onChange={handleChange}
+            />
+        </div>
+         
+         <div>
+            <label >Image URL: </label>
+            {/* image */}
+            <input
+                name="image"
+                placeholder="Image URL"
+                value={form.image}
+                onChange={handleChange}
+            />
+         </div>
 
       {/* buttons */}
-      <div style={{ marginTop: "10px" }}>
+      <div style={{ marginTop: "10px" }} className="flex w-full justify-between flex-row">
         <button type="submit" disabled={loading}>
           {loading ? "กำลังบันทึก..." : editing ? "อัปเดต" : "เพิ่ม"}
         </button>
