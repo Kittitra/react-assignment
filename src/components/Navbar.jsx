@@ -29,6 +29,8 @@ function Navbar() {
 
   const userData = JSON.parse(localStorage.getItem("user"));
 
+  console.log("User Data in Navbar:", userData); // ตรวจสอบข้อมูลที่ได้จาก localStorage
+
   return (
     <nav className="navbar">
       <div className="logo" onClick={() => window.location.href = "/"} style={{ cursor: "pointer" }}>
@@ -36,7 +38,7 @@ function Navbar() {
       </div>
 
       
-       {userData?.role !== "user" && (
+       {userData?.role === "admin" && (
           <div className="nav-links-center">
             <Link to="/">Home</Link>
             <Link to="/rental">Rental</Link>
@@ -45,6 +47,7 @@ function Navbar() {
             <Link to="/category-manager">CategoryManager</Link>
             <Link to="/product-form">ProductForm</Link>
             <Link to="/product-manager">ProductManager</Link>
+            <Link to="/addadmin">AddAdmin</Link>
           </div>
         )}
 
@@ -61,7 +64,7 @@ function Navbar() {
           <div className="user-menu" onClick={() => setShowDropdown(!showDropdown)}>
             {/* ตรวจสอบว่าในข้อมูล user มี customer_name หรือไม่ */}
             <span className="user-name">
-              {user.customer_name || user.username || "User"} ▼
+              {user.customer_name || user.admin_name || "User"} ▼
             </span>
             {showDropdown && (
               <div className="dropdown">

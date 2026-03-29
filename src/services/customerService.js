@@ -110,3 +110,8 @@ export const deleteCustomer = async (id) => {
         throw error;
     }
 };
+
+export const getCustomerByEmail = async (email) => {
+  const res = await api.get(`/customers.php/email/${email}`);
+  return res.data; // ได้ { success: true, customer: { customer_id: 2, ... } }
+};

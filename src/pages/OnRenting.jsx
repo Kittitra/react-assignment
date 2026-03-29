@@ -14,7 +14,7 @@ const OnRenting = () => {
 
     const result = useMemo(() => {
         return products.filter(
-            (item) => item.customer_id === 1 && item.status === "rented" //user.customer_id
+            (item) => item.customer_id === user.customer_id && item.status === "rented" //user.customer_id
         );
     }, [products]);
 

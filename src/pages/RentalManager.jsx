@@ -47,6 +47,7 @@ const RentalManager = () => {
                 <div key={index} className='flex flex-col p-7 bg-gray-300 rounded-xl gap-3'>
                     <span className='text-xl font-bold'>ชื่อสินค้า: {item.product_name}</span>
                     <span>เช่าโดย: {item.customer_name}</span>
+                    <span>ให้เช่าโดย Admin: {item.admin_name ?? "ไม่มีข้อมูล"}</span>
                     <span>วันที่เช่า: {item.rental_date}</span>
                     <span>วันที่นัดคืน: {item.due_date}</span>
                     <span>เงินที่ต้องจ่าย: {item.subtotal} บาท</span>

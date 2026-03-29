@@ -14,14 +14,10 @@ const HistoryRental = () => {
   
       const result = useMemo(() => {
           return products.filter(
-              (item) => item.customer_id === 1 && item.status === "available" //user.customer_id
+              (item) => item.customer_id === user.customer_id && item.status === "available" //user.customer_id
           );
       }, [products]);
-  
-      console.log(products)
-      console.log(result)
-  
-  
+
       return (
           <div>
               <h1 className='text-2xl font-bold'>สินค้าที่เคยจอง</h1>

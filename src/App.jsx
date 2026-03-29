@@ -30,6 +30,7 @@ import RentalManager from "./pages/RentalManager";
 import AllLoginAndRegis from "./pages/AllLoginAndRegis";
 import OnRenting from "./pages/OnRenting";
 import HistoryRental from "./pages/HistoryRental";
+import AddAdmin from "./pages/AddAdmin";
 
 function App() {
   return (
@@ -112,6 +113,11 @@ function App() {
             <Route path="/product-manager" element={
               <ProtectedRoute adminOnly>
                 <ProductManager />
+              </ProtectedRoute>
+            } />
+            <Route path="/addadmin" element={
+              <ProtectedRoute adminOnly>
+                <AddAdmin />
               </ProtectedRoute>
             } />
 
