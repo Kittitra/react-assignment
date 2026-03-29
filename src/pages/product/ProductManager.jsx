@@ -86,7 +86,7 @@ function ProductManager() {
         </tbody>
       </table>
 
-      {/* ✅ Modal ที่ถูกต้อง */}
+      {/* Modal */}
       {showModal && (
         <div style={overlayStyle}>
           <div style={modalStyle}>
@@ -107,7 +107,7 @@ function ProductManager() {
   );
 }
 
-// 🎯 style แยกชัด
+//
 const overlayStyle = {
   position: "fixed",
   top: 0,
