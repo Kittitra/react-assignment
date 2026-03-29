@@ -1,47 +1,133 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
-
-const API = "http://localhost/api/controllers/categories.php";
+import {
+  createCategory,
+  updateCategory
+} from "../../services/categoryService";
 
 function CategoryForm({ onSuccess, editing, setEditing }) {
-  const [name, setName] = useState("");
+  const [form, setForm] = useState({
+    category_id: null,
+    category_name: ""
+  });
 
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState(""); // success | error
+  const [message, setMessage] = useState("");
+
+  // =========================
+  // โหลดข้อมูลตอนแก้ไข
+  // =========================
   useEffect(() => {
     if (editing) {
-      setName(editing.category_name);
+      setForm({
+        category_id: editing.category_id || null,
+        category_name: editing.category_name || ""
+      });
     }
   }, [editing]);
 
+  // =========================
+  // handle change
+  // =========================
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  // =========================
+  // reset form
+  // =========================
+  const resetForm = () => {
+    setForm({
+      category_id: null,
+      category_name: ""
+    });
+    setEditing(null);
+  };
+
+  // =========================
+  // submit
+  // =========================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (editing) {
-      await axios.put(API, {
-        category_id: editing.category_id,
-        category_name: name
-      });
-    } else {
-      await axios.post(API, {
-        category_name: name
-      });
+    // validate
+    if (!form.category_name.trim()) {
+      setStatus("error");
+      setMessage("กรุณากรอกชื่อหมวดหมู่");
+      return;
     }
 
-    setName("");
-    setEditing(null);
-    onSuccess();
+    const payload = {
+      category_name: form.category_name.trim()
+    };
+
+    try {
+      setLoading(true);
+      setStatus("");
+      setMessage("");
+
+      if (editing) {
+        await updateCategory(form.category_id, payload);
+        setStatus("success");
+        setMessage("แก้ไขหมวดหมู่สำเร็จ");
+      } else {
+        await createCategory(payload);
+        setStatus("success");
+        setMessage("เพิ่มหมวดหมู่สำเร็จ");
+      }
+
+      setTimeout(() => {
+        resetForm();
+        onSuccess();
+      }, 800);
+
+    } catch (err) {
+      console.error("Submit Error:", err);
+      setStatus("error");
+      setMessage("บันทึกไม่สำเร็จ");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} style={{ width: "300px" }}>
+      <h3>{editing ? "แก้ไขหมวดหมู่" : "เพิ่มหมวดหมู่"}</h3>
+
+      {/* status */}
+      {message && (
+        <div style={{
+          padding: "10px",
+          marginBottom: "10px",
+          background: status === "success" ? "#d4edda" : "#f8d7da",
+          color: status === "success" ? "#155724" : "#721c24",
+          borderRadius: "5px"
+        }}>
+          {message}
+        </div>
+      )}
+
+      {/* category name */}
       <input
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="ชื่อประเภท"
+        name="category_name"
+        placeholder="ชื่อหมวดหมู่"
+        value={form.category_name}
+        onChange={handleChange}
       />
 
-      <button type="submit">
-        {editing ? "อัปเดต" : "เพิ่ม"}
-      </button>
+      {/* buttons */}
+      <div style={{ marginTop: "10px" }}>
+        <button type="submit" disabled={loading}>
+          {loading ? "กำลังบันทึก..." : editing ? "อัปเดต" : "เพิ่ม"}
+        </button>
+
+        <button type="button" onClick={resetForm}>
+          ล้างค่า
+        </button>
+      </div>
     </form>
   );
 }
