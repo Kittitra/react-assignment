@@ -1,3 +1,14 @@
+/* ปรับสีพื้นหลังฝั่งขวาเมื่อเป็น Admin Mode */
+.container.admin-mode .toggle {
+    background-color: #1e3a8a; /* สีน้ำเงินเข้ม */
+    background: linear-gradient(to right, #2563eb, #1e3a8a);
+}
+
+/* ปรับสีปุ่มเมื่อเป็น Admin */
+.btn-admin {
+    background-color: #1e3a8a !important;
+}
+
 .container-body{
     display: flex;
     align-items: center;
@@ -214,4 +225,70 @@
 
 .container.active .toggle-right{
     transform: translateX(200%);
+}
+
+/* จัดการกล่องที่หุ้ม User | Admin */
+.role-switch-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    width: 100%;
+}
+
+/* สไตล์พื้นฐาน (ตอนยังไม่ถูกเลือก) */
+.container .role-tab {
+    font-size: 20px;    /* ปรับขนาดให้ใหญ่ตามต้องการ */
+    font-weight: 900;
+    color: #ccc;        /* สีเทาตอนไม่ได้เลือก */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 0 10px;
+}
+
+.container .divider {
+    font-size: 28px;
+    color: #333;
+}
+
+/* --- จุดที่ต้องแก้: เพิ่ม .container ข้างหน้าเพื่อเพิ่มความเจาะจง --- */
+
+/* สไตล์เมื่อเลือก User -> ต้องเป็นสีม่วงทั้งฟอนต์และเส้นใต้ */
+.container .role-tab.active-user {
+    color: #512da8; 
+}
+.container .role-tab.active-user::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 6px;       /* เส้นใต้หนาๆ ตามรูป */
+    background-color: #512da8;
+}
+
+/* สไตล์เมื่อเลือก Admin -> ต้องเป็นสีน้ำเงินทั้งฟอนต์และเส้นใต้ */
+.container .role-tab.active-admin {
+    color: #1e3a8a;
+}
+.container .role-tab.active-admin::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 6px;       /* เส้นใต้หนาๆ ตามรูป */
+    background-color: #1e3a8a;
+}
+
+/* ปรับสีพื้นหลังฝั่งขวาเมื่อเป็น Admin Mode */
+.container.admin-mode .toggle {
+    background: linear-gradient(to right, #2563eb, #1e3a8a);
+}
+
+/* ปรับสีปุ่มเมื่อเป็น Admin */
+.container.admin-mode button:not(.ghost) {
+    background-color: #1e3a8a;
 }
