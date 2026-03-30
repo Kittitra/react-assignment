@@ -115,3 +115,8 @@ export const getCustomerByEmail = async (email) => {
   const res = await api.get(`/customers.php/email/${email}`);
   return res.data; // ได้ { success: true, customer: { customer_id: 2, ... } }
 };
+
+export const updateCustomerStatus = async (id, status) => {
+  const res = await api.patch(`/customers.php/${id}/status`, { status });
+  return res.data;
+};

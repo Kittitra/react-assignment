@@ -24,3 +24,18 @@ export const createAdmin = async (data) => {
   });
   return res.data;
 };
+
+export const updateAdmin = async (id, data) => {
+  const res = await api.put(`/admin.php/${id}`, data);
+  return res.data;
+};
+
+export const getAdmins = async () => {
+  const res = await api.get("/admin.php");
+  return res.data;
+};
+
+export const deleteAdmin = async (id) => {
+  const res = await api.delete(`/admin.php/${id}`);
+  return res.data;
+};

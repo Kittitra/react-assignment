@@ -15,7 +15,9 @@ import RentalManager from "./pages/rental/RentalManager";
 import AllLoginAndRegis from "./pages/AllLoginAndRegis";
 import OnRenting from "./pages/rental/OnRenting";
 import HistoryRental from "./pages/HistoryRental";
-import AddAdmin from "./pages/AddAdmin";
+import AddAdmin from "./pages/AdminForm";
+import AdminManager from "./pages/AdminManager";
+import UserManager from "./pages/UserManager";
 
 function App() {
   return (
@@ -75,29 +77,28 @@ function App() {
               </ProtectedRoute>
             } />
 
-            <Route path="/category-form" element={
-              <ProtectedRoute adminOnly>
-                <CategoryForm />
-              </ProtectedRoute>
-            } />
+
             <Route path="/category-manager" element={
               <ProtectedRoute adminOnly>
                 <CategoryManager />
               </ProtectedRoute>
             } />
-            <Route path="/product-form" element={
-              <ProtectedRoute adminOnly>
-                <ProductForm />
-              </ProtectedRoute>
-            } />
+
             <Route path="/product-manager" element={
               <ProtectedRoute adminOnly>
                 <ProductManager />
               </ProtectedRoute>
             } />
-            <Route path="/addadmin" element={
+
+            <Route path="/adminmanager" element={
               <ProtectedRoute adminOnly>
-                <AddAdmin />
+                <AdminManager />
+              </ProtectedRoute>
+            } />
+
+            <Route path="/usermanager" element={
+              <ProtectedRoute adminOnly>
+                <UserManager />
               </ProtectedRoute>
             } />
 

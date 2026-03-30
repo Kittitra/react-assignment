@@ -25,11 +25,11 @@ function ProductDetail() {
     getProductById(id).then((data) => setProduct(data));
   }, [id]);
 
-  const result = useMemo(() => {
+  const availableItems = useMemo(() => {
     return productItem.filter(
-      (item) => item.product_id === Number(id) && item.status === "available"
+        (item) => item.product_id === Number(id) && item.status === "available"
     );
-  }, [productItem, id]);
+    }, [productItem, id]);
 
   const diffDays = start && end
     ? (new Date(end) - new Date(start)) / (1000 * 60 * 60 * 24)
@@ -60,42 +60,34 @@ function ProductDetail() {
   };
 
   const Rental = () => {
-    if (!start || !end) {
-      alert("กรุณาเลือกวันเริ่มและวันคืน");
-      return;
-    }
-    if (new Date(end) <= new Date(start)) {
-      alert("วันคืนต้องมากกว่าวันเริ่ม");
-      return;
-    }
-    if (result.length === 0) {
-      alert("ไม่มีสินค้าว่างในขณะนี้");
-      return;
-    }
-    // ✅ เช็คว่าหา customer เจอแล้ว
-    if (!customerId) {
-      alert("กรุณากรอก email และตรวจสอบให้พบ customer ก่อน");
-      return;
+    if (!start || !end) { alert("กรุณาเลือกวันเริ่มและวันคืน"); return; }
+    if (new Date(end) <= new Date(start)) { alert("วันคืนต้องมากกว่าวันเริ่ม"); return; }
+    if (!customerId) { alert("กรุณากรอก email และตรวจสอบให้พบ customer ก่อน"); return; }
+
+    // ✅ เช็คก่อนว่ามีของว่างไหม
+    if (availableItems.length === 0) {
+        alert("ไม่มีสินค้าว่างในขณะนี้");
+        return;
     }
 
     const data = {
-      customer_id: customerId, // ✅ ใช้ค่าจริงจาก DB
-      admin_id: userData?.role === "admin" ? userData.admin_id : null,
-      rental_date: start,
-      due_date: end,
-      items: [
+        customer_id: customerId,
+        admin_id: userData?.role === "admin" ? userData.admin_id : null,
+        rental_date: start,
+        due_date: end,
+        items: [
         {
-          item_id: result[0]?.item_id,
-          price_per_day: product.rental_price_per_day,
-          days: diffDays,
+            item_id: availableItems[0].item_id, // ✅ ไม่ใช้ ?. เพราะเช็คแล้วว่าไม่ว่าง
+            price_per_day: product.rental_price_per_day,
+            days: diffDays,
         },
-      ],
+        ],
     };
 
     setRentData(data);
     createRental(data);
     alert("เช่าเสร็จสิ้น.");
-  };
+    };
 
   return (
     <div className="flex flex-col justify-center items-center gap-5">
@@ -141,14 +133,14 @@ function ProductDetail() {
       <span>ชื่อสินค้า: {product.product_name}</span>
       <span>คำอธิบาย: {product.description}</span>
       <span>ค่าเช่าต่อวัน: {product.rental_price_per_day}</span>
-      <span>จำนวนที่เหลือ: {result.length}</span>
+      <span>จำนวนชิ้น: {availableItems.length}</span>
 
       <button
         className="bg-purple-300 rounded-md p-3 hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         onClick={Rental}
-        disabled={!start || !end || result.length === 0 || !customerId} // ✅ เพิ่ม !customerId
+        disabled={!start || !end || !customerId || availableItems.length === 0}
       >
-        เช่า
+        {availableItems.length === 0 ? "สินค้าหมด" : "เช่า"}
       </button>
     </div>
   );

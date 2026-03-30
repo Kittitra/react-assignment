@@ -8,7 +8,8 @@ function ProductForm({ onSuccess, editing, setEditing }) {
     rental_price_per_day: "",
     category_id: "",
     description: "",
-    image: ""
+    image_url: "",
+    quantity: 1,
   });
 
   const [loading, setLoading] = useState(false);
@@ -26,7 +27,8 @@ function ProductForm({ onSuccess, editing, setEditing }) {
         rental_price_per_day: editing.rental_price_per_day || "",
         category_id: editing.category_id?.toString() || "",
         description: editing.description || "",
-        image: editing.image || ""
+        image_url: editing.image_url || "",
+        quantity: editing.total_items || 1,
       });
     }
   }, [editing]);
@@ -51,7 +53,7 @@ function ProductForm({ onSuccess, editing, setEditing }) {
       rental_price_per_day: "",
       category_id: "",
       description: "",
-      image: ""
+      image_url: ""
     });
     setEditing(null);
   };
@@ -74,7 +76,8 @@ function ProductForm({ onSuccess, editing, setEditing }) {
       description: form.description.trim(),
       rental_price_per_day: Number(form.rental_price_per_day),
       category_id: parseInt(form.category_id.trim()), // 🔥 กัน FK พัง
-      image: form.image?.trim() || "" // 🔥 กัน NULL
+      image_url: form.image_url?.trim() || "", // 🔥 กัน NULL
+      quantity: Number(form.quantity) || 1,
     };
 
     console.log("payload:", payload); // debug
@@ -186,12 +189,25 @@ function ProductForm({ onSuccess, editing, setEditing }) {
             <div className="flex flex-col gap-1">
             <label className="text-sm text-gray-500">Image URL</label>
             <input
-                name="image"
+                name="image_url"
                 placeholder="https://..."
-                value={form.image}
+                value={form.image_url}
                 onChange={handleChange}
                 className="border border-gray-200 rounded-lg px-3 py-2 text-sm w-full focus:outline-none focus:ring-1 focus:ring-gray-300"
             />
+            </div>
+
+            <div className="flex flex-col gap-1">
+                <label className="text-sm text-gray-500">จำนวนชิ้น</label>
+                <input
+                    type="number"
+                    name="quantity"
+                    min="1"
+                    placeholder="1"
+                    value={form.quantity}
+                    onChange={handleChange}
+                    className="border border-gray-200 rounded-lg px-3 py-2 text-sm w-full focus:outline-none focus:ring-1 focus:ring-gray-300"
+                />
             </div>
 
             {/* buttons */}
